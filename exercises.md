@@ -1,4 +1,4 @@
-# Exercises and solutions
+# Introductory Problems
 
 ## 1. Which shippers do we have?
 
@@ -223,8 +223,7 @@ Using `DISTINCT`:
 ```sql
 SELECT DISTINCT
     country
-FROM
-    customers
+FROM customers
 ORDER BY
     country
 ```
@@ -234,10 +233,58 @@ Using `GROUP BY`:
 ```sql
 SELECT
     country
-FROM
-    customers
+FROM customers
 GROUP BY
     country
 ORDER BY
     country
+```
+
+## 17. Contact titles for customers
+
+Show a list of all the different values in the Customers table for ContactTitles. Also include a count for each ContactTitle.
+
+This is similar in concept to the previous question “Countries where there are customers”, except we now want a count for each ContactTitle.
+
+```sql
+SELECT
+    contact_title,
+    COUNT(contact_title) AS contact_title_count
+FROM customers
+GROUP BY
+    contact_title
+ORDER BY
+    COUNT(contact_title) DESC
+```
+
+## 18. Products with associated supplier names
+
+We’d like to show, for each product, the associated Supplier. Show the ProductID, ProductName, and the CompanyName of the Supplier. Sort by ProductID. This question will introduce what may be a new concept, the Join clause in SQL. The Join clause is used to join two or more relational database tables together in a logical way.
+
+```sql
+SELECT
+    products.product_id,
+    products.product_name,
+    suppliers.company_name
+FROM products
+    JOIN suppliers
+        ON products.product_id=suppliers.supplier_id
+```
+
+## 19. Orders and the Shipper that was used
+
+We’d like to show a list of the Orders that were made, including the Shipper that was used. Show the OrderID, OrderDate (date only), and CompanyName of the Shipper, and sort by OrderID.
+
+In order to not show all the orders (there’s more than 800), show only those rows with an OrderID of less than 10300.
+
+```sql
+SELECT
+    orders.order_id,
+    orders.order_date,
+    shippers.company_name
+FROM orders
+JOIN shippers
+    ON orders.ship_via=shippers.shipper_id
+WHERE
+    orders.order_id < 10300
 ```
